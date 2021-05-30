@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "fs": "*",
+    "js-beautify": "^1.13.13",
+    "js-yaml": "^4.1.0",
+    "node-html-parser": "^3.3.4",
+    "showdown": "^1.9.1"
+  }
+}
