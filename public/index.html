@@ -27,12 +27,16 @@
       Here I post notes for future reference.
     </p>
 
-    <h3>Notes</h3>
 
-    <h4>May 30, 2021. Toggle fullscreen on Vim split</h4>
-    <p>We don't need any fancy plugins to toggle a Vim split fullscreen.<br>
-      Just place this on your <code>.vimrc</code> and resize your Vim split with <code>&lt;Leader&gt;f</code></p>
-    <pre><code class="vim language-vim">function! s:ZoomToggle() abort
+    <div class="mt-4">
+      <details>
+        <summary class="select-none outline-none cursor-pointer">
+          <h4 class="inline">May 30, 2021. Toggle fullscreen on Vim split</h4>
+        </summary>
+        <p>
+        <p>We don't need any fancy plugins to toggle a Vim split fullscreen.<br>
+          Just place this on your <code>.vimrc</code> and resize your Vim split with <code>&lt;Leader&gt;f</code></p>
+        <pre><code class="vim language-vim">function! s:ZoomToggle() abort
     if exists('t:zoomed') &amp;&amp; t:zoomed
         execute t:zoom_winrestcmd
         let t:zoomed = 0
@@ -46,21 +50,30 @@ endfunction
 command! ZoomToggle call s:ZoomToggle()
 nnoremap &lt;silent&gt; &lt;Leader&gt;f :ZoomToggle&lt;CR&gt;
 </code></pre>
+        </p>
+      </details>
+    </div>
 
-    <h4>May 30, 2021. Less verbose Kubernetes commands</h4>
-    <p>When working on a Kubernetes application, I constantly have to <code>kubectl get pod</code> then I copy the pod name and run something like:</p>
-    <pre><code class="shell language-shell">$ kubectl logs -f pod_name
+
+    <div class="mt-4">
+      <details>
+        <summary class="select-none outline-none cursor-pointer">
+          <h4 class="inline">May 30, 2021. Less verbose Kubernetes commands</h4>
+        </summary>
+        <p>
+        <p>When working on a Kubernetes application, I constantly have to <code>kubectl get pod</code> then I copy the pod name and run something like:</p>
+        <pre><code class="shell language-shell">$ kubectl logs -f pod_name
 </code></pre>
-    <p>To automate this, we can use <code>$()</code> which evaluates a command and concatenates the result onto current command.<br>
-      First we need to adapt <code>kubectl get pod</code> to get the pod we want:</p>
-    <pre><code class="shell language-shell">$ kubectl get pod -l "app=pod_name" -o name | sed "s/pod\///" | head -n 1
+        <p>To automate this, we can use <code>$()</code> which evaluates a command and concatenates the result onto current command.<br>
+          First we need to adapt <code>kubectl get pod</code> to get the pod we want:</p>
+        <pre><code class="shell language-shell">$ kubectl get pod -l "app=pod_name" -o name | sed "s/pod\///" | head -n 1
 </code></pre>
-    <p>Change <code>pod_name</code> for your desired pod.<br>
-      Then we can use this inside <code>$()</code> to concatenate the log command:</p>
-    <pre><code class="shell language-shell">$ kubectl logs -f $(kubectl get pod -l "app=pod_name" -o name | sed "s/pod\///" | head -n 1)
+        <p>Change <code>pod_name</code> for your desired pod.<br>
+          Then we can use this inside <code>$()</code> to concatenate the log command:</p>
+        <pre><code class="shell language-shell">$ kubectl logs -f $(kubectl get pod -l "app=pod_name" -o name | sed "s/pod\///" | head -n 1)
 </code></pre>
-    <p>Finally, we can create a function. Think about this shell function as an alias with a param:</p>
-    <pre><code>klog() {
+        <p>Finally, we can create a function. Think about this shell function as an alias with a param:</p>
+        <pre><code>klog() {
  if [ "$#" -eq  "0" ]
    then
      kubectl logs -f $(kubectl get pod -l "app=default_pod_name" -o name | sed "s/pod\///" | head -n 1)
@@ -69,30 +82,77 @@ nnoremap &lt;silent&gt; &lt;Leader&gt;f :ZoomToggle&lt;CR&gt;
  fi
 }
 </code></pre>
-    <p>Place it on your bash initialization script (usually <code>.bash_profile</code> or <code>.bashrc</code>) and change <code>default_pod_name</code> accordingly.<br>
-      Now you can access your default pod logs with <code>klog</code> and specific pods with <code>klog pod_name</code>.<br>
-      And it's trivial to adapt to run a remote console, or anything else. </p>
-    <p><br>
-      Have fun!</p>
+        <p>Place it on your bash initialization script (usually <code>.bash_profile</code> or <code>.bashrc</code>) and change <code>default_pod_name</code> accordingly.<br>
+          Now you can access your default pod logs with <code>klog</code> and specific pods with <code>klog pod_name</code>.<br>
+          And it's trivial to adapt to run a remote console, or anything else. </p>
+        <p><br>
+          Have fun!</p>
+        </p>
+      </details>
+    </div>
 
-    <h4>May 30, 2021. Run test under cursor in Vim</h4>
+
+    <div class="mt-4">
+      <details>
+        <summary class="select-none outline-none cursor-pointer">
+          <h4 class="inline">May 30, 2021. Run test under cursor in Vim</h4>
+        </summary>
+        <p>
+        <p>Something I need to do very often (and quickly) when writing code is to test it.<br>
+          It's easy to do this in VIM without any plugins</p>
+        <pre><code class="vim language-vim">let s:term_buf_nr = -1
+
+function! s:RunTestLine() abort
+    if s:term_buf_nr == -1
+        execute 'terminal mix test % ' . '--exclude test --include line:'. line('.') " &lt;- CHANGE THIS
+        let s:term_buf_nr = bufnr("$")
+    else
+        try
+            execute "bdelete! " . s:term_buf_nr
+        endtry
+        let s:term_buf_nr = -1
+        call &lt;SID&gt;RunTestLine()
+    endif
+endfunction
+
+nnoremap &lt;silent&gt; &lt;Leader&gt;t :call &lt;SID&gt;RunTestLine()&lt;CR&gt;
+tnoremap &lt;silent&gt; &lt;Leader&gt;t &lt;C-w&gt;N:call &lt;SID&gt;RunTestLine()&lt;CR&gt;
+</code></pre>
+        <p>If you are on <code>current_filename.ex</code> at line 30 and press <code>&lt;Leader&gt;t</code>, the snippet run: </p>
+        <pre><code class="shell language-shell">mix test path/to/current_filename.ex --exclude test --include line:30
+</code></pre>
+        <p>In other words, it runs a single line of an elixir test file.<br>
+          With minimal changes you can port to your language, or extend it to run all tests in this file.<br>
+          <br>
+          And profit….YAY!
+        </p>
+        </p>
+      </details>
+    </div>
 
 
-    <h4>May 29, 2021. Static Site Generator in &lt; 100 lines of code</h4>
-    <p>Just like every dev writing a blog, my first question was: what is the minimum set of features to maintain it comfortably?<br>
-      Personally, I think the worst part of writing plain HTML is to keep the layout updated on all pages.<br>
-      If I change the navigation menu, I have to copy/paste the changes on every page of my website.
-      <br>
-      Additionally, I don't want to spend days reading a static site generator documentation.<br>
-      What if I could write <code>about.html</code> like this
-    </p>
-    <pre><code class="html language-html">&lt;partial src="partials/layout.html" page="about"&gt;
+    <div class="mt-4">
+      <details>
+        <summary class="select-none outline-none cursor-pointer">
+          <h4 class="inline">May 29, 2021. Static Site Generator in < 100 lines of code</h4>
+        </summary>
+        <p>
+        <p>Just like every dev writing a blog, my first question was:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp; <em>What is the minimum set of features to maintain it comfortably?</em><br>
+          <br>
+          For me, the worst part of writing plain HTML is to keep the layout updated on all pages.<br>
+          If I change the navigation menu, I don't want to copy/paste the changes on every page of my website.<br>
+          Additionally, I don't want to spend days reading a static site generator documentation.<br>
+          <br>
+          What if I could write <code>about.html</code> like this
+        </p>
+        <pre><code class="html language-html">&lt;partial src="partials/layout.html" page="about"&gt;
   &lt;h1&gt;About me&lt;/h1&gt;
   &lt;p&gt;I am awesome!&lt;/p&gt;
 &lt;/partial&gt;
 </code></pre>
-    <p>And the browser concatenates <code>partials/layout.html</code></p>
-    <pre><code class="html language-html">&lt;html&gt;
+        <p>And the browser concatenates <code>partials/layout.html</code></p>
+        <pre><code class="html language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;My Blog&lt;/title&gt;
     &lt;link href="assets/css/{{ page }}.css" rel="stylesheet"&gt;
@@ -103,8 +163,8 @@ nnoremap &lt;silent&gt; &lt;Leader&gt;f :ZoomToggle&lt;CR&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-    <p>Giving a final result</p>
-    <pre><code class="html language-html">&lt;html&gt;
+        <p>Giving a final result</p>
+        <pre><code class="html language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;My Blog&lt;/title&gt;
     &lt;link href="assets/css/about.css" rel="stylesheet"&gt;
@@ -116,25 +176,22 @@ nnoremap &lt;silent&gt; &lt;Leader&gt;f :ZoomToggle&lt;CR&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-    <p>What if you could write your website title, description, and static texts like this:</p>
-    <pre><code class="yaml language-yaml">author: John Doe
+        <p>What if you could write your website title, description, and static texts like this:</p>
+        <pre><code class="yaml language-yaml">author: John Doe
 description: This is a personal blog
 keywords: HTML, CSS, JavaScript
 </code></pre>
-    <p>And render them like this</p>
-    <pre><code class="html language-html">&lt;meta name="author" content="{{ author }}"&gt;
+        <p>And render them like this</p>
+        <pre><code class="html language-html">&lt;meta name="author" content="{{ author }}"&gt;
 &lt;meta name="description" content="{{ description }}"&gt;
 &lt;meta name="keywords" content="{{ keywords }}"&gt;
 </code></pre>
-    <p>Most web frameworks implement variations of this pattern to help you create your web apps using reusable components.<br>
-      But sometimes we don't wanna mess up with a complex framework, we just want to write HTML/CSS/JS without any configuration or learning curve.<br>
-      <br>
-      So here is a small snippet to accomplish just what we want: partials with attributes. Save it to <code>publish.js</code> and follow the instructions.
-    </p>
-    <div class="text-center">
-      <pre class="text-left inline-block bg-gray-100">
-<code>
-// Publishes all html files in templates/*.html to public/*.html.
+        <p>Most web frameworks implement variations of this pattern to help you create your web apps using reusable components.<br>
+          But sometimes we don't wanna mess up with a complex framework, we just want to write HTML/CSS/JS without any configuration or learning curve.<br>
+          <br>
+          So here is a small snippet to accomplish just what we want: partials with attributes. Save it to <code>publish.js</code> and follow the instructions.
+        </p>
+        <pre><code>// Publishes all html files in templates/*.html to public/*.html.
 //
 // Features:
 // - partial data with `&lt;put src="foo/bar.html" /&gt;`
@@ -223,9 +280,11 @@ function readPartial(key, inputPath, dictionary) {
 function log_error(msg) {
     return err =&gt; { if (err) { console.error(msg); console.error(err); } };
 }
-</code>
-</pre>
+</code></pre>
+        </p>
+      </details>
     </div>
+
   </main>
 
 

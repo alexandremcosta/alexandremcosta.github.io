@@ -1,8 +1,10 @@
-Just like every dev writing a blog, my first question was: what is the minimum set of features to maintain it comfortably?  
-Personally, I think the worst part of writing plain HTML is to keep the layout updated on all pages.  
-If I change the navigation menu, I have to copy/paste the changes on every page of my website.
+Just like every dev writing a blog, my first question was:  
+&nbsp;&nbsp;&nbsp;&nbsp; *What is the minimum set of features to maintain it comfortably?*  
 <br>
+For me, the worst part of writing plain HTML is to keep the layout updated on all pages.  
+If I change the navigation menu, I don't want to copy/paste the changes on every page of my website.  
 Additionally, I don't want to spend days reading a static site generator documentation.  
+<br>
 What if I could write `about.html` like this
 
 ```html
@@ -64,9 +66,7 @@ But sometimes we don't wanna mess up with a complex framework, we just want to w
 <br>
 So here is a small snippet to accomplish just what we want: partials with attributes. Save it to `publish.js` and follow the instructions.
 
-<div class="text-center">
-<pre class="text-left inline-block bg-gray-100">
-<code>
+```
 // Publishes all html files in templates/*.html to public/*.html.
 //
 // Features:
@@ -156,6 +156,4 @@ function readPartial(key, inputPath, dictionary) {
 function log_error(msg) {
 	return err => { if (err) { console.error(msg); console.error(err); } };
 }
-</code>
-</pre>
-</div>
+```

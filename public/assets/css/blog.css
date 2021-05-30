@@ -1,7 +1,11 @@
+hr {
+	margin: 2em 0;
+}
+
 h1, h2, h3, h4, h5 {
 	font-weight: 800;
 	font-family: sans-serif;
-	margin-top: 2em;
+	margin: 0.5em 0;
 }
 
 h1 {
@@ -34,9 +38,13 @@ a {
 }
 
 pre {
-	margin: 1em;
-	padding: 0 2em;
+	display: inline-block;
+	margin: 1em 0;
+	padding: 1.5em 2em;
 	line-height: 1.2em;
+	-moz-box-shadow:    6px 6px 30px #ddd;
+	-webkit-box-shadow: 6px 6px 30px #ddd;
+	box-shadow:         6px 6px 30px #ddd;
 }
 
 code {
@@ -46,4 +54,13 @@ code {
 
 code.hljs {
 	background: none;
+}
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep {
+  0%    {opacity: 0; margin-left: -4em}
+  100%  {opacity: 1;}
 }
