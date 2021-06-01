@@ -4,7 +4,7 @@ hr {
 
 h1, h2, h3, h4, h5 {
 	font-weight: 800;
-	font-family: sans-serif;
+	font-family: serif;
 	margin: 0.5em 0;
 }
 
@@ -33,18 +33,17 @@ h5 {
 	line-height: 1.75rem;
 }
 
-a {
-	color: blue;
-}
+a { color: blue; }
+a:hover { text-decoration: underline; }
 
 pre {
 	display: inline-block;
 	margin: 1em 0;
 	padding: 1.5em 2em;
 	line-height: 1.2em;
-	-moz-box-shadow:    6px 6px 30px #ddd;
-	-webkit-box-shadow: 6px 6px 30px #ddd;
-	box-shadow:         6px 6px 30px #ddd;
+	-moz-box-shadow:    6px 6px 30px #e9e9e9;
+	-webkit-box-shadow: 6px 6px 30px #d9e9e9;
+	box-shadow:         6px 6px 30px #d9e9e9;
 }
 
 code {

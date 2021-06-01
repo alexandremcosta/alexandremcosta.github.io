@@ -1,0 +1,5 @@
+posts:
+  - ['Toggle fullscreen on Vim split', vim-fullscreen]
+  - ['Less verbose Kubernetes command', kub]
+  - ['Run test under cursor in Vim', vim-test]
+  - ['Static Site Generator in &lt; 100 lines of code', ssg]
