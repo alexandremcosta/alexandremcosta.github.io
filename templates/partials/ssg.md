@@ -5,7 +5,7 @@ Just like every dev writing a blog, my first question was:
 <br>
 For me, the worst part of writing plain HTML is to keep the layout updated on all pages.  
 If I change the navigation menu, I don't want to copy/paste the changes on every page of my website.  
-Additionally, I don't want to spend days reading a static site generator documentation.  
+I also don't want to spend days reading a static site generator documentation.  
 <br>
 What if I could write `about.html` like this
 
@@ -64,9 +64,10 @@ And render them like this
 ```
 
 Most web frameworks implement variations of this pattern to help you create your web apps using reusable components.  
-But sometimes we don't wanna mess up with a complex framework, we just want to write HTML/CSS/JS without any configuration or learning curve.  
+But we don't want to learn a new framework, we just want to write HTML/CSS/JS without any configuration or learning curve.  
 <br>
-So here is a small snippet to accomplish just what we want: partials with attributes. Save it to `publish.js` and follow the instructions.
+So here is a small snippet to accomplish **partials with attributes**.  
+Save it to `publish.js` and follow the instructions.
 
 ```
 // Publishes all html files in templates/*.html to public/*.html.

@@ -36,6 +36,11 @@ h5 {
 a { color: blue; }
 a:hover { text-decoration: underline; }
 
+p {
+  font-family: serif;
+  font-size: 1.2em;
+}
+
 pre {
 	display: inline-block;
 	margin: 1em 0;
@@ -48,7 +53,7 @@ pre {
 
 code {
 	color: #d63384;
-	font-size: 0.9em;
+	font-size: 12px;
 }
 
 code.hljs {
