@@ -1,15 +1,18 @@
 // Publishes all html files in templates/*.html to public/*.html.
-// Place root files in `templates/` and partial files in subfolders, for example `templates/partials`.
+// Place each page in `templates/`. Each one will become a page of your website.
+// Place each partial in subfolders, for example `templates/partials`.
+// Files in subfolders aren't published to `public/` but can be used in `<partial>` tags:
 //
-// Features:
-// - partial data with `<partial src="foo/bar.html" />`
-// - partial content with `<partial src="foo/bar.html">your content</p>`
-//   use `{{ content }}` inside the partial to define where "your content" is placed
-// - partial attributes with `<partial src="foo/bar.html" key="value" />`
+// - Use `<partial src="foo/bar.html" />` inside a template and run `node publish.js`
+//   to replace by the content of templates/partials/foo/bar.html
+// - Use `<partial src="foo/bar.html">your content</p>`
+//   to replace by the content of templates/partials/foo/bar.html
+//   where `{{ content }}` inside the partial defines where "your content" is placed
+// - When `<partial src="foo/bar.html" key="value" />`
 //   use `{{ key }}` inside the partial to define where "value" is placed
-// - text.yml data with `{{ any yaml key }}` on any file
-// - text.yml custom data with `<partial src="any yaml key" foo="bar">` on any file
-//   use `{{ foo }}` inside the yaml value to define where "bar" is placed
+// - Use `{{ any yaml key }}` on any file to replace by text.yml values
+// - Use `<partial src="any yaml key" foo="bar">` on any file to replace by text.yml values
+//   where `{{ foo }}` inside the yaml defines where "bar" is placed
 //
 // Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
 // Supports markdown partials.

@@ -1,3 +1,5 @@
+# Kubernetes Logs and Console Simplified Command
+
 When working on a Kubernetes application, I constantly have to `kubectl get pod` then I copy the pod name and run something like:
 
 ```shell

@@ -20,6 +20,7 @@
 
   <main class="container mx-auto ml-40 lg:px-40 px-10 py-10">
 
+    <h1 id="staticsitegeneratorin100linesofcode">Static Site Generator in &lt; 100 lines of code</h1>
     <p>Just like every dev writing a blog, my first question was:<br>
       &nbsp;&nbsp;&nbsp;&nbsp; <em>What is the minimum set of features to maintain it comfortably?</em><br>
       <br>
@@ -75,17 +76,20 @@ keywords: HTML, CSS, JavaScript
       So here is a small snippet to accomplish just what we want: partials with attributes. Save it to <code>publish.js</code> and follow the instructions.
     </p>
     <pre><code>// Publishes all html files in templates/*.html to public/*.html.
-// Place root files in `templates/` and partial files in subfolders, for example `templates/partials`.
+// Place each page in `templates/`. Each one will become a page of your website.
+// Place each partial in subfolders, for example `templates/partials`.
+// Files in subfolders aren't published to `public/` but can be used in `&lt;partial&gt;` tags:
 //
-// Features:
-// - partial data with `&lt;partial src="foo/bar.html" /&gt;`
-// - partial content with `&lt;partial src="foo/bar.html"&gt;your content&lt;/p&gt;`
-//   use `{{ content }}` inside the partial to define where "your content" is placed
-// - partial attributes with `&lt;partial src="foo/bar.html" key="value" /&gt;`
+// - Use `&lt;partial src="foo/bar.html" /&gt;` inside a template and run `node publish.js`
+//   to replace by the content of templates/partials/foo/bar.html
+// - Use `&lt;partial src="foo/bar.html"&gt;your content&lt;/p&gt;`
+//   to replace by the content of templates/partials/foo/bar.html
+//   where `{{ content }}` inside the partial defines where "your content" is placed
+// - When `&lt;partial src="foo/bar.html" key="value" /&gt;`
 //   use `{{ key }}` inside the partial to define where "value" is placed
-// - text.yml data with `{{ any yaml key }}` on any file
-// - text.yml custom data with `&lt;partial src="any yaml key" foo="bar"&gt;` on any file
-//   use `{{ foo }}` inside the yaml value to define where "bar" is placed
+// - Use `{{ any yaml key }}` on any file to replace by text.yml values
+// - Use `&lt;partial src="any yaml key" foo="bar"&gt;` on any file to replace by text.yml values
+//   where `{{ foo }}` inside the yaml defines where "bar" is placed
 //
 // Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
 // Supports markdown partials.
