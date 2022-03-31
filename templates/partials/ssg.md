@@ -68,20 +68,22 @@ So here is a small snippet to accomplish just what we want: partials with attrib
 
 ```
 // Publishes all html files in templates/*.html to public/*.html.
+// Place root files in `templates/` and partial files in subfolders, for example `templates/partials`.
 //
 // Features:
-// - partial data with `<put src="foo/bar.html" />`
-// - partial content with `<put src="foo/bar.html">your content</put>`, then use `{{ content }}` inside the partial
-// - partial attributes with `<put src="foo/bar.html" key="value" />`, then use `{{ key }}` inside the partial
+// - partial data with `<partial src="foo/bar.html" />`
+// - partial content with `<partial src="foo/bar.html">your content</p>`
+//   use `{{ content }}` inside the partial to define where "your content" is placed
+// - partial attributes with `<partial src="foo/bar.html" key="value" />`
+//   use `{{ key }}` inside the partial to define where "value" is placed
 // - text.yml data with `{{ any yaml key }}` on any file
-// - text.yml attributes with `<put src="any yaml key" foo="bar">` on any file, then use `{{ foo }}` inside the yaml
+// - text.yml custom data with `<partial src="any yaml key" foo="bar">` on any file
+//   use `{{ foo }}` inside the yaml value to define where "bar" is placed
 //
-// Creates one html file in public/ for each html file in templates/ root.
-// It ignores subfolders so that you can use them for partial files.
-// Supports markdown.
+// Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
+// Supports markdown partials.
 //
-// Run `npm install fs node-html-parser js-beautify js-yaml showdown`
-// Then you can `node publish.js` and inspect public/ files.
+// Run `npm install`, then you can `node publish.js` and inspect public/ files.
 
 const fs = require('fs');
 const parser = require('node-html-parser');
@@ -142,7 +144,7 @@ function replaceBraces(text, dictionary) {
 	const regexp = /{{\s*([\w\s]+)\s*}}/g;
 	let key;
 
-	return text.replaceAll(regexp, replacement => {
+	return text.replace(regexp, replacement => {
 		key = replacement.substring(2, replacement.length - 2).trim()
 		return dictionary[key] || replacement;
 	});

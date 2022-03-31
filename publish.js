@@ -1,12 +1,15 @@
 // Publishes all html files in templates/*.html to public/*.html.
-// Place root files in `templates/` and partial files in subfolders, for example `templates/layouts`.
+// Place root files in `templates/` and partial files in subfolders, for example `templates/partials`.
 //
 // Features:
-// - partial data with `<put src="foo/bar.html" />`
-// - partial content with `<p src="foo/bar.html">your content</p>`, then use `{{ content }}` inside the partial to output `your content`
-// - partial attributes with `<p src="foo/bar.html" key="value" />`, then use `{{ key }}` inside the partial to output `value`
+// - partial data with `<partial src="foo/bar.html" />`
+// - partial content with `<partial src="foo/bar.html">your content</p>`
+//   use `{{ content }}` inside the partial to define where "your content" is placed
+// - partial attributes with `<partial src="foo/bar.html" key="value" />`
+//   use `{{ key }}` inside the partial to define where "value" is placed
 // - text.yml data with `{{ any yaml key }}` on any file
-// - text.yml attributes with `<put src="any yaml key" foo="bar">` on any file, then use `{{ foo }}` inside the yaml value to output `bar`
+// - text.yml custom data with `<partial src="any yaml key" foo="bar">` on any file
+//   use `{{ foo }}` inside the yaml value to define where "bar" is placed
 //
 // Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
 // Supports markdown partials.
@@ -72,7 +75,7 @@ function replaceBraces(text, dictionary) {
 	const regexp = /{{\s*([\w\s]+)\s*}}/g;
 	let key;
 
-	return text.replaceAll(regexp, replacement => {
+	return text.replace(regexp, replacement => {
 		key = replacement.substring(2, replacement.length - 2).trim()
 		return dictionary[key] || replacement;
 	});
