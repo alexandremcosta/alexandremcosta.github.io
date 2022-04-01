@@ -1,36 +1,36 @@
 hr {
-	margin: 2em 0;
+  margin: 2em 0;
 }
 
 h1, h2, h3, h4, h5 {
-	font-weight: 800;
-	font-family: serif;
-	margin: 0.5em 0;
+  font-weight: 800;
+  font-family: serif;
+  margin: 0.5em 0;
 }
 
 h1 {
-	font-size: 2.25rem;
-	line-height: 2.5rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 h2 {
-	font-size: 1.875rem;
-	line-height: 2.25rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 h3 {
-	font-size: 1.5rem;
-	line-height: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 h4 {
-	font-size: 1.25rem;
-	line-height: 1.75rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 h5 {
-	font-size: 1.125rem;
-	line-height: 1.75rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 a { color: blue; }
@@ -41,19 +41,26 @@ p {
   font-size: 1.2em;
 }
 
+img {
+  margin: 1em;
+  -moz-box-shadow:    6px 6px 30px #e9e9e9;
+  -webkit-box-shadow: 6px 6px 30px #d9e9e9;
+  box-shadow:         6px 6px 30px #d9e9e9;
+}
+
 pre {
-	display: inline-block;
-	margin: 1em 0;
-	padding: 1.5em 2em;
-	line-height: 1.2em;
-	-moz-box-shadow:    6px 6px 30px #e9e9e9;
-	-webkit-box-shadow: 6px 6px 30px #d9e9e9;
-	box-shadow:         6px 6px 30px #d9e9e9;
+  display: inline-block;
+  margin: 1em 0;
+  padding: 1.5em 2em;
+  line-height: 1.2em;
+  -moz-box-shadow:    6px 6px 30px #e9e9e9;
+  -webkit-box-shadow: 6px 6px 30px #d9e9e9;
+  box-shadow:         6px 6px 30px #d9e9e9;
 }
 
 code {
-	color: #d63384;
-	font-size: 0.9em;
+  color: #d63384;
+  font-size: 0.9em;
 }
 
 @media (max-width: 1024px) {
@@ -64,7 +71,7 @@ code {
 }
 
 code.hljs {
-	background: none;
+  background: none;
 }
 
 details[open] summary ~ * {
