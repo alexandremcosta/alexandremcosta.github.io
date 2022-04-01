@@ -56,6 +56,13 @@ code {
 	font-size: 0.9em;
 }
 
+@media (max-width: 1024px) {
+  code {
+    font-size: 0.6em;
+    line-height: 0.2em;
+  }
+}
+
 code.hljs {
 	background: none;
 }

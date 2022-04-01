@@ -3,7 +3,7 @@
 Just like every dev writing a blog, my first question was:  
 &nbsp;&nbsp;&nbsp;&nbsp; *What is the minimum set of features to maintain it comfortably?*  
 <br>
-For me, the worst part of writing plain HTML is to keep the layout updated on all pages.  
+For me, the worst part of writing plain HTML is to manage the layout on all pages.  
 If I change the navigation menu, I don't want to copy/paste the changes on every page of my website.  
 I also don't want to spend days reading a static site generator documentation.  
 <br>
