@@ -39,6 +39,8 @@ fs.readdirSync(inputPath)
 		const outputFilename = outputPath + filename;
 		const outputError = `Cannot write output (${outputFilename})`;
 		let html = maybeReadFile(inputPath + filename);
+
+		console.log(`Processing ${filename}...`)
 		html = replaceSnippets(html, inputPath, dictionary);
 		html = beautify_html(html, {indent_size: 2});
 
@@ -85,6 +87,7 @@ function replaceBraces(text, dictionary) {
 }
 
 function readPartial(key, inputPath, dictionary) {
+	console.log(`|_ Processing ${key}...`)
 	const fileContent = maybeReadFile(inputPath + key);
 	return fileContent || dictionary[key] || '';
 }

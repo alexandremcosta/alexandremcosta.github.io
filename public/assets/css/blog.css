@@ -60,25 +60,10 @@ pre {
 
 code {
   color: #d63384;
-  font-size: 0.9em;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-@media (max-width: 1024px) {
-  code {
-    font-size: 0.6em;
-    line-height: 0.2em;
-  }
-}
-
-code.hljs {
-  background: none;
-}
-
-details[open] summary ~ * {
-  animation: sweep .5s ease-in-out;
-}
-
-@keyframes sweep {
-  0%    {opacity: 0; margin-left: -4em}
-  100%  {opacity: 1;}
-}
+@media (max-width: 1024px) { code { font-size: 10px; } }
+@media (max-width: 768px) { code { font-size: 8px; } }
+code.hljs { background: none; }

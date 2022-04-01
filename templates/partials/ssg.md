@@ -71,15 +71,15 @@ Save it to `publish.js` and follow the instructions.
 
 ```
 // Publishes all html files in templates/*.html to public/*.html.
-// Place each page in `templates/`. Each one will become a page of your website.
-// Place each partial in subfolders, for example `templates/partials`.
+// Write the website HTML in `templates/`. Each file will become a page of your website.
+// Write partial templates in subfolders, for example `templates/partials`.
 // Files in subfolders aren't published to `public/` but can be used in `<partial>` tags:
 //
 // - Use `<partial src="foo/bar.html" />` inside a template and run `node publish.js`
-//   to replace by the content of templates/partials/foo/bar.html
+//   to replace this tag by the contents of the source file
 // - Use `<partial src="foo/bar.html">your content</p>`
-//   to replace by the content of templates/partials/foo/bar.html
-//   where `{{ content }}` inside the partial defines where "your content" is placed
+//   to replace by the contents of the file and `{{ content }}` inside the partial
+//   to define where "your content" is placed
 // - When `<partial src="foo/bar.html" key="value" />`
 //   use `{{ key }}` inside the partial to define where "value" is placed
 // - Use `{{ any yaml key }}` on any file to replace by text.yml values
@@ -165,3 +165,5 @@ function log_error(msg) {
 	return err => { if (err) { console.error(msg); console.error(err); } };
 }
 ```
+
+This is also [available on GitHub](https://github.com/alexandremcosta/alexandremcosta.github.io), together with the rest of this blog.
