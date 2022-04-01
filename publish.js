@@ -36,12 +36,12 @@ const inputFilenameRegex = new RegExp('\.html$');
 fs.readdirSync(inputPath)
 	.filter(filename => filename.match(inputFilenameRegex))
 	.forEach(filename => {
+		console.log(`Processing page ${filename}...`)
 		const outputFilename = outputPath + filename;
 		const outputError = `Cannot write output (${outputFilename})`;
 		let html = maybeReadFile(inputPath + filename);
 
-		console.log(`Processing ${filename}...`)
-		html = replaceSnippets(html, inputPath, dictionary);
+		html = replacePartialTag(html, inputPath, dictionary);
 		html = beautify_html(html, {indent_size: 2});
 
 		fs.writeFile(outputFilename, html, log_error(outputError));
@@ -60,15 +60,15 @@ function maybeReadFile(filename) {
 	}
 }
 
-function replaceSnippets(html, inputPath, dictionary) {
+function replacePartialTag(html, inputPath, dictionary) {
 	const tag = 'partial', attr = 'src';
-	let elem, doc = parser.parse(replaceBraces(html, dictionary));
+	let elem, doc = parser.parse(replaceCurlyBracket(html, dictionary));
 
 	while(elem = doc.querySelector(tag + '[' + attr + ']')) {
 		const {[attr]: source, ...tagDictionary} = elem.attributes;
 		const partialDictionary = {...dictionary, ...tagDictionary, content: elem.innerHTML};
 		const rawPartial = readPartial(source, inputPath, dictionary);
-		const parsedPartial = replaceBraces(rawPartial, partialDictionary);
+		const parsedPartial = replaceCurlyBracket(rawPartial, partialDictionary);
 
 		elem.replaceWith(parsedPartial);
 	}
@@ -76,7 +76,7 @@ function replaceSnippets(html, inputPath, dictionary) {
 	return doc.toString();
 }
 
-function replaceBraces(text, dictionary) {
+function replaceCurlyBracket(text, dictionary) {
 	const regexp = /{{\s*([\w\s]+)\s*}}/g;
 	let key;
 
@@ -87,7 +87,7 @@ function replaceBraces(text, dictionary) {
 }
 
 function readPartial(key, inputPath, dictionary) {
-	console.log(`|_ Processing ${key}...`)
+	console.log(`|_ Processing partial ${key}...`)
 	const fileContent = maybeReadFile(inputPath + key);
 	return fileContent || dictionary[key] || '';
 }
