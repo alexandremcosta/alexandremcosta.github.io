@@ -1,3 +1,5 @@
+author: "Alexandre Costa"
+
 posts:
   - ['Toggle fullscreen on Vim split', vim-fullscreen]
   - ['Less verbose Kubernetes command', kub]

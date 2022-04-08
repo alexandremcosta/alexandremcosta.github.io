@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="assets/css/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/highlight/github.css">
+  <link href="assets/css/blog.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="bg-gradient-to-r from-gray-800 to-blue-600 p-4 relative font-sans">
+    <nav class="container mx-auto xl:px-40 px-10 space-x-6 font-semibold">
+      <a href="index.html" class="text-gray-300 active-on-index">Blog</a>
+      <a href="work.html" class="text-gray-300 active-on-work">Curriculum Vitae</a>
+    </nav>
+  </header>
+
+  <main class="container mx-auto xl:px-40 px-10 py-10">
+
+    <p>Elixir programming language has built-in support for <a href="https://hexdocs.pm/elixir/Stream.html">Streams</a>.</p>
+    <p>Streams are a great way to process huge amounts of data, without loading all at once into memory.</p>
+    <p>For example, let's say you have a huge CSV file on disk and need to count how many rows have the first column blank.</p>
+    <p>If the CSV file is larger than your RAM memory, you cannot simply open and load it into memory.</p>
+    <p>You have to load a chunk of it, process, free that memory, load another chunk, process…</p>
+    <p>Here is how to accomplish that in Elixir, with the <a href="https://hexdocs.pm/nimble_csv/NimbleCSV.html">NimbleCSV</a> library:</p>
+    <pre><code class="elixir language-elixir">NimbleCSV.define(CSVParser)
+
+"path/to/csv/file"
+|&gt; File.stream!()
+|&gt; CSVParser.parse_stream()
+|&gt; Enum.count(fn row -&gt;
+   first = List.first(row) || ""
+   String.trim(first) == ""
+end)
+</code></pre>
+    <p>What if this file is stored in another server? You might think that's easy, just use an HTTP client
+      to download the file, and repeat what you did above!</p>
+    <pre><code class="elixir language-elixir">Finch.start_link(name: MyFinch)
+%{body: body} = Finch.build(:get, "https://foobar.com/file.csv") |&gt; Finch.request(MyFinch)
+
+body
+|&gt; CSVParser.parse_stream()
+|&gt; Enum.count(fn row -&gt;
+   first = List.first(row) || ""
+   String.trim(first) == ""
+end)
+</code></pre>
+    <p>The problem with this is that <code>parse_stream/0</code> function is not receiving a stream anymore. It's receiving a binary, fully loaded into RAM memory.</p>
+    <p>If this file is larger than your RAM, you will have problems!</p>
+    <p>Fortunatelly, Finch library provides a way to stream the body with <a href="https://hexdocs.pm/finch/Finch.html#stream/5">Finch.stream/5</a>.</p>
+
+    <nav class="text-xl">
+      <h3>Notes</h3>
+
+      <ul>
+        <li><a href="whats-app.html">Open WhatsApp conversation without a contact</a></li>
+        <li><a href="toggle-fullscreen-vim-split.html">Toggle fullscreen on Vim split</a></li>
+        <li><a href="shorter-kubernetes-commands.html">Shorter Kubernetes commands</a></li>
+        <li><a href="run-test-under-cursor-in-vim.html">Run test under cursor in Vim</a></li>
+        <li><a href="static-site-generator.html">How do I generate this website?</a></li>
+      </ul>
+    </nav>
+
+  </main>
+
+  <script src="assets/js/highlight.pack.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+</body>
+
+</html>

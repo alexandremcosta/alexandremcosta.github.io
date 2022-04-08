@@ -7,14 +7,13 @@
   <link href="assets/css/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/highlight/github.css">
   <link href="assets/css/blog.css" rel="stylesheet">
-  <link href="assets/css/{{ page }}.css" rel="stylesheet">
 </head>
 
 <body>
   <header class="bg-gradient-to-r from-gray-800 to-blue-600 p-4 relative font-sans">
     <nav class="container mx-auto xl:px-40 px-10 space-x-6 font-semibold">
-      <a href="index.html" class="text-gray-300 active-on-index {{ page }}">Blog</a>
-      <a href="work.html" class="text-gray-300 active-on-work {{ page }}">Curriculum Vitae</a>
+      <a href="index.html" class="text-gray-300 active-on-index">Blog</a>
+      <a href="work.html" class="text-gray-300 active-on-work">Curriculum Vitae</a>
     </nav>
   </header>
 
@@ -26,28 +25,27 @@
       <br>
       For me, the worst part of writing plain HTML is to manage the layout on all pages.<br>
       If I change the navigation menu, I don't want to copy/paste the changes on every page of my website.<br>
-      I also don't want to spend days reading a static site generator documentation.<br>
-      <br>
-      What if I could write <code>about.html</code> like this
+      I also don't want to spend days reading a static site generator documentation.
     </p>
+    <hr>
+    <h4 id="whatifyoucouldwriteinabouthtml">What if you could write in <code>about.html</code></h4>
     <pre><code class="html language-html">&lt;partial src="partials/layout.html" page="about"&gt;
   &lt;h1&gt;About me&lt;/h1&gt;
   &lt;p&gt;I am awesome!&lt;/p&gt;
 &lt;/partial&gt;
 </code></pre>
-    <p>And the browser concatenates <code>partials/layout.html</code></p>
+    <h4 id="runatoolthatreadspartialslayouthtml">Run a tool that reads <code>partials/layout.html</code></h4>
     <pre><code class="html language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;My Blog&lt;/title&gt;
-    &lt;link href="assets/css/{{ page }}.css" rel="stylesheet"&gt;
+    &lt;link href="assets/css/\{\{ page \}\}.css" rel="stylesheet"&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;partial src="nav.html" /&gt;
-    {{ content }}
-  &lt;/body&gt;
+    {{ content }}   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-    <p>Giving a final result</p>
+    <h4 id="andoutput">And output</h4>
     <pre><code class="html language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;My Blog&lt;/title&gt;
@@ -60,118 +58,26 @@
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-    <p>What if you could write your website title, description, and static texts like this:</p>
+    <h4 id="andhavesimplevariables">And have simple variables</h4>
     <pre><code class="yaml language-yaml">author: John Doe
 description: This is a personal blog
 keywords: HTML, CSS, JavaScript
 </code></pre>
-    <p>And render them like this</p>
-    <pre><code class="html language-html">&lt;meta name="author" content="{{ author }}"&gt;
-&lt;meta name="description" content="{{ description }}"&gt;
-&lt;meta name="keywords" content="{{ keywords }}"&gt;
+    <h4 id="thatcanberenderedlikethis">That can be rendered like this</h4>
+    <pre><code class="html language-html">&lt;meta name="author" content="\{\{ author \}\}"&gt;
+&lt;meta name="description" content="\{\{ description \}\}"&gt;
+&lt;meta name="keywords" content="\{\{ keywords \}\}"&gt;
 </code></pre>
-    <p>Most web frameworks implement variations of this pattern to help you create your web apps using reusable components.<br>
-      But we don't want to learn a new framework, we just want to write HTML/CSS/JS without any configuration or learning curve.<br>
+    <hr>
+    <h4 id="mysimplestaticsitegenerator">My Simple Static Site Generator</h4>
+    <p>Most web frameworks implement this to help you create your web apps using reusable templates.<br>
+      But we don't want to learn a new framework. We prefer a simple snippet than a huge documentation.
       <br>
-      So here is a small snippet to accomplish <strong>partials with attributes</strong>.<br>
+      So here is a small snippet to accomplish <strong>partial templates with attributes</strong>.<br>
       Save it to <code>publish.js</code> and follow the instructions.
     </p>
-    <pre><code>// Publishes all html files in templates/*.html to public/*.html.
-// Write the website HTML in `templates/`. Each file will become a page of your website.
-// Write partial templates in subfolders, for example `templates/partials`.
-// Files in subfolders aren't published to `public/` but can be used in `&lt;partial&gt;` tags:
-//
-// - Use `&lt;partial src="foo/bar.html" /&gt;` inside a template and run `node publish.js`
-//   to replace this tag by the contents of the source file
-// - Use `&lt;partial src="foo/bar.html"&gt;your content&lt;/p&gt;`
-//   to replace by the contents of the file and `{{ content }}` inside the partial
-//   to define where "your content" is placed
-// - When `&lt;partial src="foo/bar.html" key="value" /&gt;`
-//   use `{{ key }}` inside the partial to define where "value" is placed
-// - Use `{{ any yaml key }}` on any file to replace by text.yml values
-// - Use `&lt;partial src="any yaml key" foo="bar"&gt;` on any file to replace by text.yml values
-//   where `{{ foo }}` inside the yaml defines where "bar" is placed
-//
-// Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
-// Supports markdown partials.
-//
-// Run `npm install`, then you can `node publish.js` and inspect public/ files.
-
-const fs = require('fs');
-const parser = require('node-html-parser');
-const beautify_html = require('js-beautify').html;
-const yaml = require('js-yaml');
-const showdown = require('showdown');
-const markdown = new showdown.Converter();
-
-// config
-const inputPath = __dirname + '/templates/';
-const outputPath = __dirname + '/public/';
-const dictionary = yaml.load(maybeReadFile(__dirname + '/text.yml')) || {};
-const inputFilenameRegex = new RegExp('\.html$');
-
-// main
-fs.readdirSync(inputPath)
-    .filter(filename =&gt; filename.match(inputFilenameRegex))
-    .forEach(filename =&gt; {
-        const outputFilename = outputPath + filename;
-        const outputError = `Cannot write output (${outputFilename})`;
-        let html = maybeReadFile(inputPath + filename);
-        html = replaceSnippets(html, inputPath, dictionary);
-        html = beautify_html(html, {indent_size: 2});
-
-        fs.writeFile(outputFilename, html, log_error(outputError));
-});
-
-// helpers
-function maybeReadFile(filename) {
-    try {
-        const isMarkdown = (filename.substring(filename.length - 3, filename.length) == '.md');
-        const content = fs.readFileSync(filename, 'utf8').toString();
-        return isMarkdown ? markdown.makeHtml(content) : content;
-    }
-    catch(err) {
-        console.error(`Missing file (${err.path})`);
-        return '';
-    }
-}
-
-function replaceSnippets(html, inputPath, dictionary) {
-    const tag = 'partial', attr = 'src';
-    let elem, doc = parser.parse(replaceBraces(html, dictionary));
-
-    while(elem = doc.querySelector(tag + '[' + attr + ']')) {
-        const {[attr]: source, ...tagDictionary} = elem.attributes;
-        const partialDictionary = {...dictionary, ...tagDictionary, content: elem.innerHTML};
-        const rawPartial = readPartial(source, inputPath, dictionary);
-        const parsedPartial = replaceBraces(rawPartial, partialDictionary);
-
-        elem.replaceWith(parsedPartial);
-    }
-
-    return doc.toString();
-}
-
-function replaceBraces(text, dictionary) {
-    const regexp = /{{\s*([\w\s]+)\s*}}/g;
-    let key;
-
-    return text.replace(regexp, replacement =&gt; {
-        key = replacement.substring(2, replacement.length - 2).trim()
-        return dictionary[key] || replacement;
-    });
-}
-
-function readPartial(key, inputPath, dictionary) {
-    const fileContent = maybeReadFile(inputPath + key);
-    return fileContent || dictionary[key] || '';
-}
-
-function log_error(msg) {
-    return err =&gt; { if (err) { console.error(msg); console.error(err); } };
-}
-</code></pre>
     <p>This is also <a href="https://github.com/alexandremcosta/alexandremcosta.github.io">available on GitHub</a>, together with the rest of this blog.</p>
+    <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Falexandremcosta%2Falexandremcosta.github.io%2Fblob%2Fmain%2Fpublish.js&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
 
     <nav class="text-xl">
       <h3>Notes</h3>

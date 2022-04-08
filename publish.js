@@ -1,57 +1,97 @@
-// Publishes all html files in templates/*.html to public/*.html.
-// Write the website HTML in `templates/`. Each file will become a page of your website.
-// Write partial templates in subfolders, for example `templates/partials`.
-// Files in subfolders aren't published to `public/` but can be used in `<partial>` tags:
-//
-// - Use `<partial src="foo/bar.html" />` inside a template and run `node publish.js`
-//   to replace this tag by the contents of the source file
-// - Use `<partial src="foo/bar.html">your content</p>`
-//   to replace by the contents of the file and `{{ content }}` inside the partial
-//   to define where "your content" is placed
-// - When `<partial src="foo/bar.html" key="value" />`
-//   use `{{ key }}` inside the partial to define where "value" is placed
-// - Use `{{ any yaml key }}` on any file to replace by text.yml values
-// - Use `<partial src="any yaml key" foo="bar">` on any file to replace by text.yml values
-//   where `{{ foo }}` inside the yaml defines where "bar" is placed
-//
-// Creates one html file in public/ for each html file in templates/ that doesn't start with `_`.
-// Supports markdown partials.
-//
-// Run `npm install`, then you can `node publish.js` and inspect public/ files.
+/*
+  Publishes all html files from templates/*.html to public/*.html.
 
-const fs = require('fs');
-const parser = require('node-html-parser');
-const beautify_html = require('js-beautify').html;
-const yaml = require('js-yaml');
+  Write the website HTML in `templates/`.
+  Each file in the root of `templates/` becomes a page of your website.
+  Each file in subfolders of `templates/` can be reused as a partial template.
+
+  Examples:
+
+  1. `{{ foo/bar.html }}` or `<partial src="foo/bar.html" />`
+     Is replaced by the contents of `foo/bar.html`.
+
+  2. `<partial src="foo/bar.html">your content</p>`
+     Is replaced by the contents of `foo/bar.html`.
+     Use `{{ content }}` inside the partial to define placement of `your content`.
+
+  3. `<partial src="foo/bar.html" key="value" />`
+    Use `{{ key }}` inside the partial to define placement of `value`
+
+  4. `{{ any yaml key }}`
+    Is replaced by text.yml value.
+
+  5. `<partial src="any yaml key" foo="bar">`
+    Is replaced by text.yml value.
+    Use `{{ foo }}` inside the yaml to define placement of `bar`.
+
+  Setup:
+  - Write an HTML file in `templates/`
+  - Run `npm install`
+  - Run `node publish.js`
+  - Inspect `public/` folder
+
+  Bonus: support markdown partials, beautify generated HTML
+*/
+
+// dependencies
+const FS = require('fs');
+const parse = require('node-html-parser').parse;
+const beautify = require('js-beautify').html;
+const loadYaml = require('js-yaml').load;
 const showdown = require('showdown');
 const markdown = new showdown.Converter();
 
 // config
-const inputPath = __dirname + '/templates/';
-const outputPath = __dirname + '/public/';
-const dictionary = yaml.load(maybeReadFile(__dirname + '/text.yml')) || {};
-const inputFilenameRegex = new RegExp('\.html$');
+const config = {
+	tag: 'partial',
+	attr: 'src',
+	inputPath: __dirname + '/templates/',
+	outputPath: __dirname + '/public/',
+	dictionary: loadYaml(maybeReadFile(__dirname + '/text.yml')) || {},
+	inputFilenameRegex: new RegExp('\.html$')
+};
+
 
 // main
-fs.readdirSync(inputPath)
-	.filter(filename => filename.match(inputFilenameRegex))
+FS.readdirSync(config.inputPath)
+	.filter(filename => filename.match(config.inputFilenameRegex) )
 	.forEach(filename => {
 		console.log(`Processing page ${filename}...`)
-		const outputFilename = outputPath + filename;
-		const outputError = `Cannot write output (${outputFilename})`;
-		let html = maybeReadFile(inputPath + filename);
 
-		html = replacePartialTag(html, inputPath, dictionary);
-		html = beautify_html(html, {indent_size: 2});
+		const uglyHtml = processPage(filename)
+		const beautifulHtml = beautify(uglyHtml, {indent_size: 2});
+		const outputFilename = config.outputPath + filename;
 
-		fs.writeFile(outputFilename, html, log_error(outputError));
+		FS.writeFile(outputFilename, beautifulHtml, (error) => {
+			if (error)
+				console.error(`Cannot write output (${outputFilename})`);
+		});
 });
 
 // helpers
+function processPage(filename) {
+	let rawHtml = maybeReadFile(config.inputPath + filename);
+	const replacedHtml = replaceCurlyBrackets(rawHtml, config.dictionary, config.inputPath)
+	let elem, doc = parse(replacedHtml);
+
+	// for each partial tag, read source from file or yaml, replace its curly brackets
+	// and replace the html tag by the final content of source.
+	while(elem = doc.querySelector(config.tag + '[' + config.attr + ']')) {
+		const {[config.attr]: source, ...tagDictionary} = elem.attributes;
+		const partialDictionary = {...config.dictionary, ...tagDictionary, content: elem.innerHTML};
+		const rawPartial = readDictionaryOrFile(source, partialDictionary, config.inputPath);
+		const replacedPartial = replaceCurlyBrackets(rawPartial, partialDictionary, config.inputPath);
+
+		elem.replaceWith(replacedPartial);
+	}
+
+	return doc.toString();
+}
+
 function maybeReadFile(filename) {
 	try {
 		const isMarkdown = (filename.substring(filename.length - 3, filename.length) == '.md');
-		const content = fs.readFileSync(filename, 'utf8').toString();
+		const content = FS.readFileSync(filename, 'utf8').toString();
 		return isMarkdown ? markdown.makeHtml(content) : content;
 	}
 	catch(err) {
@@ -60,38 +100,22 @@ function maybeReadFile(filename) {
 	}
 }
 
-function replacePartialTag(html, inputPath, dictionary) {
-	const tag = 'partial', attr = 'src';
-	let elem, doc = parser.parse(replaceCurlyBracket(html, dictionary));
+function replaceCurlyBrackets(text, dictionary) {
+	// match {{ any thing }} or {{ any/file.txt }}
+	const regexp = /{{\s*[\w\.\/\s]+\s*}}/g;
 
-	while(elem = doc.querySelector(tag + '[' + attr + ']')) {
-		const {[attr]: source, ...tagDictionary} = elem.attributes;
-		const partialDictionary = {...dictionary, ...tagDictionary, content: elem.innerHTML};
-		const rawPartial = readPartial(source, inputPath, dictionary);
-		const parsedPartial = replaceCurlyBracket(rawPartial, partialDictionary);
-
-		elem.replaceWith(parsedPartial);
-	}
-
-	return doc.toString();
-}
-
-function replaceCurlyBracket(text, dictionary) {
-	const regexp = /{{\s*([\w\s]+)\s*}}/g;
-	let key;
-
-	return text.replace(regexp, replacement => {
-		key = replacement.substring(2, replacement.length - 2).trim()
-		return dictionary[key] || replacement;
+	text = text.replace(regexp, replacement => {
+		const key = replacement.substring(2, replacement.length - 2).trim();
+		return readDictionaryOrFile(key, dictionary, config.inputPath);
 	});
+
+	// support escaped backslashes, for example `\{\{` is replaced by `{{`
+	const escapedOpenBraces = /\s\\\{\\\{/g;
+	const escapedCloseBraces = /\\\}\\\}\s/g;
+	return text.replace(escapedOpenBraces, " {{").replace(escapedCloseBraces, "}} ");
 }
 
-function readPartial(key, inputPath, dictionary) {
-	console.log(`|_ Processing partial ${key}...`)
-	const fileContent = maybeReadFile(inputPath + key);
-	return fileContent || dictionary[key] || '';
-}
-
-function log_error(msg) {
-	return err => { if (err) { console.error(msg); console.error(err); } };
+function readDictionaryOrFile(key, dictionary) {
+	console.log(`|_ Processing partial "${key}"`)
+	return dictionary[key] || maybeReadFile(config.inputPath + key) || `{{ ${key} }}`;
 }
