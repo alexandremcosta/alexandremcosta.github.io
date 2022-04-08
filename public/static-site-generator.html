@@ -38,11 +38,12 @@
     <pre><code class="html language-html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;My Blog&lt;/title&gt;
-    &lt;link href="assets/css/\{\{ page \}\}.css" rel="stylesheet"&gt;
+    &lt;link href="assets/css/{{ page }}.css" rel="stylesheet"&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;partial src="nav.html" /&gt;
-    {{ content }}   &lt;/body&gt;
+    {{ content }}
+  &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
     <h4 id="andoutput">And output</h4>
@@ -64,9 +65,9 @@ description: This is a personal blog
 keywords: HTML, CSS, JavaScript
 </code></pre>
     <h4 id="thatcanberenderedlikethis">That can be rendered like this</h4>
-    <pre><code class="html language-html">&lt;meta name="author" content="\{\{ author \}\}"&gt;
-&lt;meta name="description" content="\{\{ description \}\}"&gt;
-&lt;meta name="keywords" content="\{\{ keywords \}\}"&gt;
+    <pre><code class="html language-html">&lt;meta name="author" content="{{ author }}"&gt;
+&lt;meta name="description" content="{{ description }}"&gt;
+&lt;meta name="keywords" content="{{ keywords }}"&gt;
 </code></pre>
     <hr>
     <h4 id="mysimplestaticsitegenerator">My Simple Static Site Generator</h4>

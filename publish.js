@@ -109,10 +109,10 @@ function replaceCurlyBrackets(text, dictionary) {
 		return readDictionaryOrFile(key, dictionary, config.inputPath);
 	});
 
-	// support escaped backslashes, for example `\{\{` is replaced by `{{`
-	const escapedOpenBraces = /\s\\\{\\\{/g;
-	const escapedCloseBraces = /\\\}\\\}\s/g;
-	return text.replace(escapedOpenBraces, " {{").replace(escapedCloseBraces, "}} ");
+	// support escaped backslashes, for example \{\{ is replaced by {{
+	const escapedOpenBraces = /\\\{\\\{/g;
+	const escapedCloseBraces = /\\\}\\\}/g;
+	return text.replace(escapedOpenBraces, "{{").replace(escapedCloseBraces, "}}");
 }
 
 function readDictionaryOrFile(key, dictionary) {
