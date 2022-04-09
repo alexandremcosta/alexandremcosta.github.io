@@ -43,10 +43,10 @@ const markdown = new showdown.Converter();
 
 // config
 const config = {
-	tag: 'partial',
+	tag: 'ssgen',
 	attr: 'src',
-	inputPath: __dirname + '/templates/',
-	outputPath: __dirname + '/public/',
+	inputPath: __dirname + '/in/',
+	outputPath: __dirname + '/out/',
 	dictionary: loadYaml(maybeReadFile(__dirname + '/text.yml')) || {},
 	inputFilenameRegex: new RegExp('\.html$')
 };
