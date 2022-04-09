@@ -10,7 +10,7 @@
   1. `{{ foo/bar.html }}` or `<partial src="foo/bar.html" />`
      Is replaced by the contents of `foo/bar.html`.
 
-  2. `<partial src="foo/bar.html">your content</partial`
+  2. `<partial src="foo/bar.html">your content</partial>`
      Is replaced by the contents of `foo/bar.html`.
      Use `{{ content }}` inside the partial to define placement of `your content`.
 
