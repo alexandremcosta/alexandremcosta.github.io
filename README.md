@@ -1,4 +1,4 @@
-# Static Site Generator in < 100 lines of code
+# [Static Site Generator in < 100 lines of code](https://alexxx.co/static-site-generator.html)
 Most web frameworks implement this to help you create your web apps using reusable templates.
 But we don't want to learn a new framework. We prefer a simple snippet than a huge documentation.
 So here is a small snippet to accomplish partial templates with attributes.
