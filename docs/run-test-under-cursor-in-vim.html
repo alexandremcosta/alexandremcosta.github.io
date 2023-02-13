@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="//static.getclicky.com/101395598.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<title></title>
+<style>
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+{  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar navbar-expand navbar-light">
+<div class="container">
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/resume.html">Resume</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/blog.html">Blog</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main class="container py-3">
+<div class="row">
+<div class="col col-xl-8 offset-xl-2">
+<h1 id="run-test-under-cursor-in-vim">Run Test Under Cursor in Vim</h1>
+<p>The first thing I do when I setup Vim is to make it run code
+instantly.<br />
+When I write code, in any language, I need to see its output
+constantly.<br />
+This is specially important when you are developing with tests.</p>
+<h4 id="here-is-a-snippet-to-run-the-test-case-under-cursor">Here is a
+snippet to run the test case under cursor</h4>
+<p>It creates a terminal buffer and run the test command in it. If the
+buffer already exists, the function will close that buffer and run the
+test command. It uses <code>%</code> to interpolate the current filename
+in the command, and <code>. line('.')</code> to append the current line
+number.</p>
+<p>The command <code>nnoremap</code> and <code>tnoremap</code> are used
+to map the function to the keybinding <Leader>t in normal and terminal
+mode respectively, so when the user press <Leader>t it will execute the
+function, providing a convenient way to run tests in terminal mode.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot; Keep track of the buffer number for the terminal window &quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">let</span> <span class="va">s</span><span class="op">:</span><span class="va">term_buf_nr</span> <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot; Define function &quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span>! <span class="va">s</span><span class="op">:</span>RunTestLine<span class="op">()</span> <span class="va">abort</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot; If terminal buffer is not open yet &quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">s</span><span class="op">:</span><span class="va">term_buf_nr</span> <span class="op">==</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot; Open new terminal window and run test command with the current file and line number &quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">execute</span> <span class="st">&#39;terminal mix test % &#39;</span> <span class="op">.</span> <span class="st">&#39;--exclude test --include line:&#39;</span><span class="op">.</span> line<span class="op">(</span><span class="st">&#39;.&#39;</span><span class="op">)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot; Save the buffer number of the new terminal window &quot;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">let</span> <span class="va">s</span><span class="op">:</span><span class="va">term_buf_nr</span> <span class="op">=</span> bufnr<span class="op">(</span><span class="st">&quot;$&quot;</span><span class="op">)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot; If terminal buffer is already open &quot;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot; Try to close the existing terminal buffer, do not fail if already closed &quot;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">try</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="fu">execute</span> <span class="st">&quot;bdelete! &quot;</span> <span class="op">.</span> <span class="va">s</span><span class="op">:</span><span class="va">term_buf_nr</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">endtry</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot; Reset the buffer number variable &quot;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">let</span> <span class="va">s</span><span class="op">:</span><span class="va">term_buf_nr</span> <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot; Call the function again to open a new terminal window &quot;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">call</span> <span class="op">&lt;</span><span class="cn">SID</span><span class="op">&gt;</span>RunTestLine<span class="op">()</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="va">endif</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="va">endfunction</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="st">&quot; Map leader + t to call the RunTestLine function in normal and terminal mode &quot;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="va">nnoremap</span> <span class="op">&lt;</span><span class="va">silent</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="cn">L</span><span class="va">eader</span><span class="op">&gt;</span><span class="va">t</span> <span class="op">:</span><span class="va">call</span> <span class="op">&lt;</span><span class="cn">SID</span><span class="op">&gt;</span>RunTestLine<span class="op">()&lt;</span><span class="cn">CR</span><span class="op">&gt;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="va">tnoremap</span> <span class="op">&lt;</span><span class="va">silent</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="cn">L</span><span class="va">eader</span><span class="op">&gt;</span><span class="va">t</span> <span class="op">&lt;</span><span class="cn">C</span><span class="op">-</span><span class="va">w</span><span class="op">&gt;</span><span class="cn">N</span><span class="op">:</span><span class="va">call</span> <span class="op">&lt;</span><span class="cn">SID</span><span class="op">&gt;</span>RunTestLine<span class="op">()&lt;</span><span class="cn">CR</span><span class="op">&gt;</span></span></code></pre></div>
+<p>In this example, if we are on <code>line 25</code> of
+<code>file.exs</code> and press <code>&lt;Leader&gt;t</code>, it opens a
+terminal in a split to run
+<code>mix test file.ex --exclude test --include line:25</code>. You
+should change the command to your needs.</p>
+<p><h3>My Notes</h3>
+
+<ul>
+<li><a href="chat-gpt-site-generator.html">How was this site built by Chat GPT?</a></li>
+<li><a href="erlang-trace-from-elixir.html">Using :erlang.trace/3 in Elixir</a></li>
+<li><a href="shorter-kubernetes-commands.html">Functions to shorten Kubernetes commands</a></li>
+<li><a href="run-test-under-cursor-in-vim.html">Run test in Vim without extensions</a></li>
+<li><a href="toggle-fullscreen-vim-split.html">Toggle Vim split full screen without extensions</a></li>
+</ul></p>
+</div>
+</div>
+</main>
+<footer class="py-4 text-center row">
+<div class="col-8 offset-2 font-small">
+<small>
+Website generated by a <a href="chat-gpt-site-generator.html">script</a> created with the help of <a href="https://openai.com/api/gpt/">ChatGPT</a> from <a href="https://openai.com/">OpenAI</a>.<br>
+Licensed under the <a href="https://opensource.org/licenses/MIT">MIT license</a>.
+</small>
+</div>
+</footer>
+</body>
+</html>

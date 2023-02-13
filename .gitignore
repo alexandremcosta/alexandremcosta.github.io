@@ -1,0 +1,12 @@
+# Vim
+*.swp
+
+# Devenv
+devenv*
+.devenv*
+devenv.local.nix
+.envrc
+
+# OSX
+.DS_Store
+**/.DS_Store

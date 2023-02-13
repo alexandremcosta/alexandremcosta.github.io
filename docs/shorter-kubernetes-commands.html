@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="//static.getclicky.com/101395598.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<title></title>
+<style>
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+{  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar navbar-expand navbar-light">
+<div class="container">
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/resume.html">Resume</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/blog.html">Blog</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main class="container py-3">
+<div class="row">
+<div class="col col-xl-8 offset-xl-2">
+<h1 id="kubernetes-logs-and-console-simplified-command">Kubernetes Logs
+and Console Simplified Command</h1>
+<p>When working on a Kubernetes application, I constantly have to
+<code>kubectl get pod</code> then I copy the pod name and run something
+like:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">$</span> kubectl logs <span class="at">-f</span> pod_name</span></code></pre></div>
+<p>To automate this, we can use <code>$()</code> which evaluates a
+command and concatenates the result onto current command.</p>
+<p>First we need to adapt <code>kubectl get pod</code> to get the pod we
+want:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">$</span> kubectl get pod <span class="at">-l</span> <span class="st">&quot;app=pod_name&quot;</span> <span class="at">-o</span> name <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&quot;s/pod\///&quot;</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code></pre></div>
+<p>Change <code>pod_name</code> for your desired pod.</p>
+<p>Then we can use this inside <code>$()</code> to concatenate the log
+command:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">$</span> kubectl logs <span class="at">-f</span> <span class="va">$(</span><span class="ex">kubectl</span> get pod <span class="at">-l</span> <span class="st">&quot;app=pod_name&quot;</span> <span class="at">-o</span> name <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&quot;s/pod\///&quot;</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1<span class="va">)</span></span></code></pre></div>
+<p>Finally, we can create a function. Think about this shell function as
+an alias with a param:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">klog()</span> <span class="kw">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$#</span><span class="st">&quot;</span> <span class="ot">-eq</span>  <span class="st">&quot;0&quot;</span> <span class="bu">]</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   <span class="cf">then</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="ex">kubectl</span> logs <span class="at">-f</span> <span class="va">$(</span><span class="ex">kubectl</span> get pod <span class="at">-l</span> <span class="st">&quot;app=default_pod_name&quot;</span> <span class="at">-o</span> name <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&quot;s/pod\///&quot;</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1<span class="va">)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> <span class="cf">else</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="ex">kubectl</span> logs <span class="at">-f</span> <span class="va">$(</span><span class="ex">kubectl</span> get pod <span class="at">-l</span> <span class="st">&quot;app=</span><span class="va">$1</span><span class="st">&quot;</span> <span class="at">-o</span> name <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&quot;s/pod\///&quot;</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1<span class="va">)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="cf">fi</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>Place it on your bash initialization script (usually
+<code>.bash_profile</code> or <code>.bashrc</code>) and change
+<code>default_pod_name</code> accordingly.</p>
+<p>Now you can access your default pod logs with <code>klog</code> and
+specific pods with <code>klog pod_name</code>.</p>
+<p>And it’s trivial to adapt to run a remote console, or anything
+else.</p>
+<p>Have fun!</p>
+<p><h3>My Notes</h3>
+
+<ul>
+<li><a href="chat-gpt-site-generator.html">How was this site built by Chat GPT?</a></li>
+<li><a href="erlang-trace-from-elixir.html">Using :erlang.trace/3 in Elixir</a></li>
+<li><a href="shorter-kubernetes-commands.html">Functions to shorten Kubernetes commands</a></li>
+<li><a href="run-test-under-cursor-in-vim.html">Run test in Vim without extensions</a></li>
+<li><a href="toggle-fullscreen-vim-split.html">Toggle Vim split full screen without extensions</a></li>
+</ul></p>
+</div>
+</div>
+</main>
+<footer class="py-4 text-center row">
+<div class="col-8 offset-2 font-small">
+<small>
+Website generated by a <a href="chat-gpt-site-generator.html">script</a> created with the help of <a href="https://openai.com/api/gpt/">ChatGPT</a> from <a href="https://openai.com/">OpenAI</a>.<br>
+Licensed under the <a href="https://opensource.org/licenses/MIT">MIT license</a>.
+</small>
+</div>
+</footer>
+</body>
+</html>

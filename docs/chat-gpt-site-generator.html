@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="//static.getclicky.com/101395598.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<title></title>
+<style>
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+{  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav class="navbar navbar-expand navbar-light">
+<div class="container">
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/resume.html">Resume</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/blog.html">Blog</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main class="container py-3">
+<div class="row">
+<div class="col col-xl-8 offset-xl-2">
+<h1 id="chatgpt-wrote-a-static-site-generator">ChatGPT wrote a Static
+Site Generator</h1>
+<p><small> …with my help. <strong>Long story short: I suck at bash
+scripting.</strong> </small></p>
+<p>Seriously, I write code for almost 20 years but I never had to learn
+bash. Judge me!</p>
+<p>I was able to find my way around, with long hours of Google, but I
+had never written a non-trivial script. Also, I got pretty bored trying
+to read <a href="https://gohugo.io">Hugo</a> and <a
+href="https://jekyllrb.com">Jekyll</a> docs, and I wanted a dead simple
+website.</p>
+<p>So I asked ChatGPT (<a
+href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">Jan
+9 2023 version</a>) to build a static site generator in Bash.</p>
+<p>Here is the end result, after some iterations:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">==</span> <span class="st">&quot;-h&quot;</span> <span class="kw">||</span> <span class="va">$1</span> <span class="ot">==</span> <span class="st">&quot;--help&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Usage: ./script.sh layout.html input_dir output_dir&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Convert all Markdown files from input_dir to HTML and apply layout.html.&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Replace {{ partial_filename }} in the generated output by the contents the partial file.&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Support subdirectories.&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;Non-Markdown files in input_dir are copied to output_dir.&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="va">layout</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="va">input_dir</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">output_dir</span><span class="op">=</span><span class="va">$3</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Show help if number of params are incorrect, or if they don&#39;t exist</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="va">$#</span> <span class="ot">!=</span> 3 <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="kw">{</span> <span class="fu">sh</span> <span class="va">$0</span> <span class="at">-h</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$layout</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Error: Layout does not exist&quot;</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$input_dir</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Error: Input directory does not exist&quot;</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$output_dir</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Error: Output directory does not exist&quot;</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if pandoc is installed</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">hash</span> pandoc <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="op">&gt;&amp;</span><span class="dv">2</span> <span class="st">&quot;Error: pandoc is not installed. Please install it to use this script.&quot;</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate through all files in input directory or its subdirectories</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="st">&quot;</span><span class="va">$input_dir</span><span class="st">&quot;</span> <span class="at">-type</span> f <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="va">file</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the relative path to the file: remove input_dir from prefix</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="va">relative_path</span><span class="op">=</span><span class="va">${file</span><span class="op">#</span><span class="va">$input_dir</span>/<span class="va">}</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ensure the same directory structure exists in output directory</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="va">file_dir</span><span class="op">=</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">$output_dir</span><span class="st">/</span><span class="va">$relative_path</span><span class="st">&quot;</span><span class="va">)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="bu">[</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$file_dir</span><span class="st">&quot;</span> <span class="bu">]</span> <span class="kw">||</span> <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$file_dir</span><span class="st">&quot;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="pp">*</span>.md <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert Markdown to HTML and apply layout</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pandoc</span> <span class="at">--highlight-style</span> tango <span class="at">--quiet</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="at">--template</span> <span class="st">&quot;</span><span class="va">$layout</span><span class="st">&quot;</span> <span class="at">-o</span> <span class="st">&quot;</span><span class="va">$output_dir</span><span class="st">/</span><span class="va">${relative_path</span><span class="op">%</span>.md<span class="va">}</span><span class="st">.html&quot;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Copy non-Markdown files to the output directory</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$output_dir</span><span class="st">/</span><span class="va">$relative_path</span><span class="st">&quot;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate through all HTML files in output directory or its subdirectories</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="va">$output_dir</span> <span class="at">-name</span> <span class="st">&#39;*.html&#39;</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="va">file</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="va">tmp_file</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${file}</span><span class="st">.tmp&quot;</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Iterate through each line of the input file</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="bu">read</span> <span class="va">line</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the line contains the string {{ file_name }}, also capture its prefix and suffix</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">[[</span> <span class="va">$line</span> <span class="ot">=~</span> <span class="pp">^</span><span class="op">([^</span><span class="dt">\{\{</span><span class="op">]</span><span class="pp">*</span><span class="op">)</span><span class="dt">\{\{</span><span class="op">([^</span><span class="dt">\}</span><span class="op">]</span><span class="pp">*</span><span class="op">)</span><span class="dt">\}\}</span><span class="op">(</span><span class="pp">.*</span><span class="op">)$</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Get file_name from regex, strip whitespaces and prefix with output_dir</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      <span class="va">file_name</span><span class="op">=</span><span class="va">$output_dir</span>/<span class="va">$(</span><span class="bu">echo</span> <span class="va">${BASH_REMATCH</span><span class="op">[</span><span class="dv">2</span><span class="op">]</span><span class="va">}</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> <span class="st">&quot; &quot;</span><span class="va">)</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Substitute by the contents of the file, keeping prefix and suffix</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>      <span class="bu">[</span> <span class="ot">-f</span> <span class="va">$file_name</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="va">line</span><span class="op">=</span><span class="st">&quot;</span><span class="va">${BASH_REMATCH</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">}$(</span><span class="fu">cat</span> <span class="va">$file_name)${BASH_REMATCH</span><span class="op">[</span><span class="dv">3</span><span class="op">]</span><span class="va">}</span><span class="st">&quot;</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Append the line to the output file</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">&quot;%s\n&quot;</span> <span class="st">&quot;</span><span class="va">$line</span><span class="st">&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$tmp_file</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span> <span class="op">&lt;</span> <span class="va">$file</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mv</span> <span class="va">$tmp_file</span> <span class="va">$file</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p><small><strong>Warning: so far only tested in OSX 12.5.1. Open an
+issue in <a
+href="http://github.com/alexandremcosta/alexandremcosta.github.io/">GitHub</a>
+if you find problems.</strong></small></p>
+<p><br> Here is the list of features:</p>
+<ol type="1">
+<li>Markdown pages with custom HTML layout</li>
+<li>Standalone HTML pages</li>
+<li>Supports subdirectories</li>
+<li>Syntax highlight for code blocks with <code>tango</code> colors</li>
+<li>HTML partials with <code>{{ partial_filename.html }}</code></li>
+<li>ZERO setup</li>
+<li>1 dependency (pandoc)</li>
+<li>~60 lines with help section and well commented code</li>
+</ol>
+<p>You can check this <a
+href="https://github.com/alexandremcosta/alexandremcosta.github.io/">GitHub
+repository</a> to see how I used this simple Static Site Generator to
+build the website you are reading.</p>
+<h3 id="useful-tips">Useful tips</h3>
+<ul>
+<li>Use <a href="https://eradman.com/entrproject/">entr</a> to rebuild
+the website when you make changes to HTML and Markdown files:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> find . <span class="at">-name</span> <span class="st">&#39;*.html&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.md&#39;</span> <span class="at">-o</span> <span class="at">-name</span> <span class="st">&#39;*.sh&#39;</span> <span class="kw">|</span> <span class="ex">entr</span> ./script.sh layout.html src docs</span></code></pre></div>
+<ul>
+<li><p>Start a webserver to have an environment closer to
+production:<br />
+With this you can use HTTP features of javascript to send HTTP requests.
+You have better support for links, for example you can write to
+<code>src="/index.html"</code> on any subdirectory link to refer to the
+root <code>/</code> folder of our server, which is like production.
+Finally, it handles assets with the proper content-type. OSX comes with
+Ruby, which lets you simply run
+<code>cd docs/ &amp;&amp; ruby -run -ehttpd . -p8000</code> to have a
+server on <code>localhost:8000</code>. Or you can choose any other
+option from <a href="https://gist.github.com/willurd/5720255">this
+list</a>.</p></li>
+<li><p><strong>Deploy your website to GitHub</strong><br />
+Clone this repository to your website directory. Modify the
+<code>src/</code> markdown and HTML files. Create a repository on GitHub
+then run this on the directory of your website, changing
+<code>username/repository_name</code> according to what you set on
+GitHub. Finally, you need to configure GitHub pages on you repository
+<code>Settings &gt; Pages</code> to serve from main branch, from the
+<code>docs/</code> directory.</p></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clone this code</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/alexandremcosta/alexandremcosta.github.io.git website/</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make changes to src/ directory...</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the website in the docs/ directory</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sh script.sh src/layout.html src/ docs/</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># publish</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git add .</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git commit <span class="at">-m</span> <span class="st">&quot;my custom editions&quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git remote set-url origin git@github.com:username/repository_name.git</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git push <span class="at">-u</span> origin main</span></code></pre></div>
+<p><img src="/assets/gh-pages.png" class="img-fluid"></p>
+<p>And <em>voilá!</em> You have a blog online, just like mine, on
+<code>https://username.github.io/repository_name</code>. To remove the
+<code>/repository_name</code> part, you have to call your repository
+<code>username.github.io</code>.</p>
+<h3 id="a-bit-more-of-context">A bit more of context</h3>
+<p>Of course ChatGPT didn’t come with this code ready on the first
+iteration. It was more like:</p>
+<p><code>PROMPT: write a minimal static site generator in bash script with support to markdown pages and partial templates</code></p>
+<center>
+<img src="/assets/gpt01.png" class="img-thumbnail" width="400">
+</center>
+<p><code>PROMPT: change this script so that pandoc supplies the html layout itself. Also add support for partial templates, for example for any generated html file contains {{ filename }} or {{ another_filenane }} it substitutes this string by the contents of the respective file</code></p>
+<center>
+<img src="/assets/gpt02.png" class="img-thumbnail" width="400">
+</center>
+<p>Then, I kept testing the result on my machine, fixing ChatGPT errors
+and iterating with the prompt until we got the final result. Finally I
+asked it to write the <code>--help</code> flags, improve the comments
+and reduce some lines that were too verbose.</p>
+<p>I knew it was possible to generate a site with Pandoc, but I could
+never write anything polished like this by myself. Thanks ChatGPT.</p>
+<p>Drop me an <a href="mailto:alexandremcost@gmail.com">email</a> if you
+find this cool or if it doesn’t work for you! Or open an Issue on <a
+href="http://github.com/alexandremcosta/alexandremcosta.github.io/">this
+website repository</a> if you have any comments.</p>
+<p><h3>My Notes</h3>
+
+<ul>
+<li><a href="chat-gpt-site-generator.html">How was this site built by Chat GPT?</a></li>
+<li><a href="erlang-trace-from-elixir.html">Using :erlang.trace/3 in Elixir</a></li>
+<li><a href="shorter-kubernetes-commands.html">Functions to shorten Kubernetes commands</a></li>
+<li><a href="run-test-under-cursor-in-vim.html">Run test in Vim without extensions</a></li>
+<li><a href="toggle-fullscreen-vim-split.html">Toggle Vim split full screen without extensions</a></li>
+</ul></p>
+</div>
+</div>
+</main>
+<footer class="py-4 text-center row">
+<div class="col-8 offset-2 font-small">
+<small>
+Website generated by a <a href="chat-gpt-site-generator.html">script</a> created with the help of <a href="https://openai.com/api/gpt/">ChatGPT</a> from <a href="https://openai.com/">OpenAI</a>.<br>
+Licensed under the <a href="https://opensource.org/licenses/MIT">MIT license</a>.
+</small>
+</div>
+</footer>
+</body>
+</html>
