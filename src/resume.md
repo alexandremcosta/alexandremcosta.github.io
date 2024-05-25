@@ -23,15 +23,18 @@ My interests include **server-side applications**, **optimization**, **algorithm
 
 ###### **Staff Software Engineer** from Aug 2022 until now
 
-  Lead the Ads team  
-  Lead big refactor to support long-term company strategy:  
+Lead the Ads team
+Lead the Commerce Platform team
+Mentor and review backend across all teams
+Mentor and review all database changes
+Grew backend team 3x, supporting hiring and onboarding
 
-  * Task was considered unfeasible by other 2 engineers
-  * Did with zero downtime, zero bugs, seamless transition
-  * No other team was affected and nobody had to adapt
-  * 80 short backwards compatible pull requests
-  * 5k+ lines 15k- lines in 5 months
-  * Finished before deadline to allow company strategy
+Lead and executed complete backend restructure to unblock long-term company strategy
+- Zero downtime, zero bugs, seamless transition
+- No other team was affected and nobody had to adapt
+- 80 short backwards compatible pull requests
+- 5k+ lines 15k- lines in 5 months
+- Finished before deadline and unblocked company plans successfully
 <br>
 <br>
 
