@@ -19,30 +19,32 @@ My interests include **server-side applications**, **optimization**, **algorithm
 
 ## Occupation
 
-##### `March 2019 - Present` Firework, San Mateo - California
+##### `March 2019 - Present` **Firework**, San Mateo - California
 
 ###### **Staff Software Engineer** from Aug 2022 until now
+Lead the Ads team  
+Lead the Commerce Platform team  
+Mentor and review backend across all teams  
+Mentor and review all database changes  
+Grew backend team 3x, supporting hiring and onboarding  
 
-Lead the Ads team
-Lead the Commerce Platform team
-Mentor and review backend across all teams
-Mentor and review all database changes
-Grew backend team 3x, supporting hiring and onboarding
+<p style="margin-bottom: 0">
+  Lead and executed complete backend restructure to unblock long-term company strategy:
+</p>
 
-Lead and executed complete backend restructure to unblock long-term company strategy
 - Zero downtime, zero bugs, seamless transition
 - No other team was affected and nobody had to adapt
 - 80 short backwards compatible pull requests
 - 5k+ lines 15k- lines in 5 months
 - Finished before deadline and unblocked company plans successfully
-<br>
-<br>
+<br><br>
 
 ###### **Technical Lead** from May 2021 until now  
   Review all backend work  
   Plan and execute refactors to scale up the backend  
   Hire and train new devs weekly  
   Mentor engineers on race condition, algorithm optimization, database optimization, advanced DB/Redis features
+<br><br>
 
 ###### **Senior Software Engineer** from Feb 2019 until Aug 2022`  
   Solve and prevent downtimes  
@@ -56,7 +58,7 @@ Lead and executed complete backend restructure to unblock long-term company stra
   Improve dev productivity with faster compilation from minutes to seconds  
   Improve dev productivity with 4x faster tests
 
-##### `February 2017 - March 2019` **Machine Learning Researcher and Backend Developer**, D2S, Rio de Janeiro
+##### `February 2017 - March 2019` **Machine Learning R&D**, D2S, Rio de Janeiro
 
 Company founded with former teachers to build projects using Ruby on Rails as backend, Python as a machine learning interface and Vue.js on the frontend.
 Alexandre was also responsible for database and server infrastructure.
@@ -84,7 +86,7 @@ Alexandre got invited to this project when it was a shyly coded MVP. It was a po
 His everyday work consisted of the classic web workflow: optimizing queries/requests, Test-Driven-Development, Amazon Web Services, bug tracking, HTML/CSS/JS frontend, etc.
 Also, he developed solutions for inventory control, product tracking, barcode handlers, payment methods.
 
-##### `July 2012 - July 2013` **Internship and Junior Developer**, Outra Coisa (former Polo Marte), Rio de Janeiro
+##### `July 2012 - July 2013` **Junior Developer**, Outra Coisa, Rio de Janeiro
 
 Over the internship, he worked on the development of postozero.com, in which he had an every-day contact with technologies such as Git, Amazon Web Services, CoffeeScript and learned about leadership, project management and tracking, agile methodologies, and web services (API management).
 
